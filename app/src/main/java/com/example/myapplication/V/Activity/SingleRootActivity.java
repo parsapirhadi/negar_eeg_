@@ -89,6 +89,7 @@ public class SingleRootActivity extends AppCompatActivity {
                     if (modevalue==BluetoothAdapter.SCAN_MODE_CONNECTABLE){
                         bluetooth.setBackgroundResource(R.drawable.bluetooth_on_foreground);
 
+
                     }else if (modevalue==BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE)
                     {
 
