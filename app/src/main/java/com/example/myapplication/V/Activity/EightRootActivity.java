@@ -10,14 +10,13 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Vibrator;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -29,19 +28,17 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.myapplication.M.DataType.Counter;
 import com.example.myapplication.M.DataType.String1;
+import com.example.myapplication.P.FileReader;
 import com.example.myapplication.P.SetPivotName;
 import com.example.myapplication.P.SetPivotValue;
 import com.example.myapplication.R;
+import com.example.myapplication.V.ConnectGraphview;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -60,7 +57,6 @@ public class EightRootActivity extends AppCompatActivity {
     String1 string1;
     Counter counter;
     BufferedReader myReader;
-
     int g=0;
 
     int text_play=0;
@@ -78,6 +74,8 @@ public class EightRootActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.eightroot);
+        LinearLayout linearLayout=findViewById(R.id.left_linearlayout);
+
         Vibrator vibrator= (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         notchcount=0;
         playcount=0;
@@ -88,6 +86,7 @@ public class EightRootActivity extends AppCompatActivity {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         FindViewById();
+
 
 
         IntentFilter scanintentFilter=new IntentFilter(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED);
@@ -223,7 +222,9 @@ public class EightRootActivity extends AppCompatActivity {
         line.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(),SingleRootActivity.class));
+                Intent intent=new Intent(getApplicationContext(),SingleRootActivity.class);
+
+                startActivity(intent);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 finish();
 
@@ -417,6 +418,7 @@ public class EightRootActivity extends AppCompatActivity {
         graphView1.addSeries(series8);
         series8.setColor(Color.BLUE);
         series8.setDrawBackground(false);
+
 ////////////////////////////////////////////////////////////////////////////////////////////////
 /*
         graphView9 = findViewById(R.id.eightgraphview9);
@@ -438,54 +440,10 @@ public class EightRootActivity extends AppCompatActivity {
 
  */
 ////////////////////////////////////////////////////////////////////////////////////////
-        final String fileName = "g8.txt";
-        File extStore = Environment.getExternalStorageDirectory();
-        String path = extStore.getAbsolutePath().toString() + "/Download/" + fileName;
-        Log.e("ExternalStorageDemo", "Read file: " + path);
 
-        String s = "";
-        String fileContent = "";
-        try {
-            File myFile = new File(path);
-            FileInputStream fIn = new FileInputStream(myFile);
-            myReader = new BufferedReader(
-                    new InputStreamReader(fIn));
-
-            if ((s = myReader.readLine()) != null) {
-                fileContent = s ;
-            }
-
-            char[] charArray = fileContent.toCharArray();
-            Log.e("aaaaaaaaaaaaaa",""+fileContent);
-
-
-        namePivote=new SetPivotName(fileContent,string1,counter);
-        namePivote.set();
-
-
-
-        while ((s = myReader.readLine()) != null) {
-            fileContent = s ;
-            pivotValue=new SetPivotValue(fileContent,string1,counter);
-            pivotValue.set();
-        }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            myReader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        for (int o=0;o<98;o++) {
-
-        }
-
-
-        pivotValue.setvalueofeachchannel();
-        pivotValue.y();
+        graphView1.removeAllSeries();
+        ConnectGraphview drawGraphview=new ConnectGraphview(graphView1,counter);
+        drawGraphview.draw();
     }
 
 

@@ -1,6 +1,9 @@
 package com.example.myapplication.M.DataType;
 
-public class Counter {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Counter{
 
 
 int b=0;
@@ -62,4 +65,10 @@ int b1=0;
     public void setChannel_count(int channel_count) {
         this.channel_count = channel_count;
     }
+
+
+
+
+
+
 }

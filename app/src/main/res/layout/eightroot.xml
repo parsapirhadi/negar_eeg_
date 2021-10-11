@@ -174,10 +174,11 @@
             >
 
 <LinearLayout
-    android:layout_marginTop="5dp"
+    android:id="@+id/left_linearlayout"
     android:layout_marginBottom="5dp"
     android:layout_width="40dp"
     android:orientation="vertical"
+    android:background="@drawable/main"
     android:layout_height="match_parent"
 
     >
@@ -189,6 +190,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="30dp"
+            android:layout_marginTop="5dp"
             android:textSize="4sp"
             android:text="fp1-f7"
             tools:ignore="MissingConstraints" />
@@ -278,7 +280,7 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-
+android:background="@drawable/main"
         android:id="@+id/eightgraphview1"
         />
 
