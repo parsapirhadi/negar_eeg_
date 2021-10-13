@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,10 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.myapplication.M.DataType.String1;
+import com.example.myapplication.P.FileReader;
 import com.example.myapplication.R;
+import com.example.myapplication.V.ConnectGraphview;
 
 
 public class CustomDrawerLayout extends Fragment {
@@ -191,7 +195,11 @@ TextView textView;
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode==1) {
-            startActivity(new Intent(getContext(), EightRootActivity.class));
+            Intent intent=(new Intent(getContext(), EightRootActivity.class));
+String1 string1=new String1();
+string1.setFilepatch(data.getData().getPath());
+            intent.putExtra("h",string1);
+            startActivity(intent);
 
         }
 

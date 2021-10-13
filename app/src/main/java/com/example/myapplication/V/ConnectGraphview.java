@@ -12,16 +12,24 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 public class ConnectGraphview {
    GraphView graphView;
    Counter counter;
+   String1 string1;
+  int r=255;
+  int g=100;
+   int b=0;
 
-    public ConnectGraphview(GraphView graphView, Counter counter) {
+   int count=0;
+
+    public ConnectGraphview(GraphView graphView, Counter counter,String1 string1) {
         this.graphView = graphView;
         this.counter= counter;
+        this.string1=string1;
+        count=255/counter.getChannel_count();
     }
 
     public void draw(){
-        DrawGraphView drawGraphView=new DrawGraphView(counter.getChannel_count());
-        for (int i=0;i<8;i++) {
-            drawGraphView.draw(i, counter, graphView);
+        DrawGraphView drawGraphView=new DrawGraphView(counter.getChannel_count(),string1);
+        for (int i=0;i<counter.getChannel_count();i++) {
+            drawGraphView.draw(i, counter, graphView,r-=count,g,b+=count);
         }
         /*
     LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(new DataPoint[]{

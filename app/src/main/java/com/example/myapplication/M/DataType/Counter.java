@@ -3,17 +3,20 @@ package com.example.myapplication.M.DataType;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Counter{
+import java.io.Serializable;
+
+public class Counter implements Serializable {
 
 
 int b=0;
 int b1=0;
-
  int all_count=0;
+
 
     public int getAll_count() {
         return all_count;
     }
+
 
     public void setAll_count(int all_count) {
         this.all_count = all_count;

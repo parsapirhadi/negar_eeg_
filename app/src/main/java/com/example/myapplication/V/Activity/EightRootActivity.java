@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -47,10 +49,9 @@ public class EightRootActivity extends AppCompatActivity {
     ImageView notch;
     TextView textplay;
     ListView listView;
-    BluetoothAdapter bluetoothAdapter;
     Set<BluetoothDevice> pared;
     Dialog dialog;
-
+    Button lineplay;
     SetPivotName namePivote;
     SetPivotValue pivotValue;
 
@@ -63,6 +64,7 @@ public class EightRootActivity extends AppCompatActivity {
     int notchcount;
     GraphView graphView1,graphView2,graphView3,graphView4,graphView5,graphView6,graphView7,graphView8,graphView9;
     int playcount;
+
     @Override
     public void onBackPressed() {
         Intent intent=new Intent(Intent.ACTION_MAIN);
@@ -86,46 +88,9 @@ public class EightRootActivity extends AppCompatActivity {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         FindViewById();
+        lineplay.setVisibility(View.INVISIBLE);
 
 
-
-        IntentFilter scanintentFilter=new IntentFilter(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED);
-        BroadcastReceiver scanmodereceiver=new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String action=intent.getAction();
-                if(action.equals(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED))
-                {
-                    int modevalue = intent.getIntExtra(BluetoothAdapter.EXTRA_SCAN_MODE,BluetoothAdapter.ERROR);
-                    if (modevalue==BluetoothAdapter.SCAN_MODE_CONNECTABLE){
-                        bluetooth.setBackgroundResource(R.drawable.bluetooth_on_foreground);
-
-                    }else if (modevalue==BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE)
-                    {
-
-                    }else if (modevalue==BluetoothAdapter.SCAN_MODE_NONE)
-                    {
-                        bluetooth.setBackgroundResource(R.drawable.bluetooth_off_foreground);
-
-
-                    }
-                    else {
-                        Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_LONG).show();
-                    }
-                }
-
-            }
-        };
-        registerReceiver(scanmodereceiver,scanintentFilter);
-
-
-        bluetoothAdapter= BluetoothAdapter.getDefaultAdapter();
-        if (bluetoothAdapter==null){
-            Toast.makeText(getApplicationContext(),"null",Toast.LENGTH_LONG).show();
-            finish();
-        }
-        if (bluetoothAdapter.isEnabled()){
-        }
         textplay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -162,30 +127,14 @@ public class EightRootActivity extends AppCompatActivity {
                     playcount=0;
 
                 }
-            }
-        });
-        bluetooth.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bluetooth.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+lineplay.setVisibility(View.VISIBLE);
+                    Setlinebtnanim();
 
 
-                        pared=bluetoothAdapter.getBondedDevices();
-                        ArrayList list=new ArrayList();
-                        for (BluetoothDevice bt:pared){
-                            list.add(bt.getName());
 
-                        }
-                        ArrayAdapter adapter=new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1,list);
-                        listView.setAdapter(adapter);
-                        dialog.show();
-                    }
-                });
 
-            }
-        });
+            }});
+
         montage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -233,191 +182,6 @@ public class EightRootActivity extends AppCompatActivity {
         DrawerLayout drawerLayout=findViewById(R.id.draver_eightroot);
         btn.setOnClickListener(view -> drawerLayout.openDrawer(GravityCompat.START));
     /////////////////////////////////////////////////////////////////////////////////////////////
-        graphView1 = findViewById(R.id.eightgraphview1);
-
-        LineGraphSeries<DataPoint> series1 = new LineGraphSeries<DataPoint>(new DataPoint[]{
-
-
-                new DataPoint(0, 3),
-                new DataPoint(1, 5),
-                new DataPoint(2, 6),
-                new DataPoint(3, 11),
-                new DataPoint(4, 8),
-                new DataPoint(5, 5),
-                new DataPoint(6, 8),
-                new DataPoint(7, 3),
-                new DataPoint(8, 4)
-        });
-        //// graphView.setTitleTextSize(9);
-
-        graphView1.getGridLabelRenderer().setVerticalLabelsVisible(false);
-        graphView1.getGridLabelRenderer().setGridStyle( GridLabelRenderer.GridStyle.VERTICAL);
-        graphView1.getViewport().setDrawBorder(true);
-
-       // graphView1.getGridLabelRenderer().setHorizontalLabelsVisible(false);
-        graphView1.addSeries(series1);
-
-        series1.setColor(Color.MAGENTA);
-        graphView1.getGridLabelRenderer().setTextSize(15);
-
-
-
-        series1.setDrawBackground(false);
-
-////////////////////////////////////////////////////////////////////////////////////////
-
-
-        LineGraphSeries<DataPoint> series2 = new LineGraphSeries<DataPoint>(new DataPoint[]{
-
-                new DataPoint(0, 5),
-                new DataPoint(1, 7),
-                new DataPoint(2, 8),
-                new DataPoint(3, 13),
-                new DataPoint(4, 10),
-                new DataPoint(5, 7),
-                new DataPoint(6, 10),
-                new DataPoint(7, 5),
-                new DataPoint(8, 6)
-        });
-        //// graphView.setTitleTextSize(9);
-        graphView1.addSeries(series2);
-
-        series2.setColor(Color.GREEN);
-
-        series2.setDrawBackground(false);
-
-////////////////////////////////////////////////////////////////////////////////////////
-
-        LineGraphSeries<DataPoint> series3 = new LineGraphSeries<DataPoint>(new DataPoint[]{
-
-                new DataPoint(0, 7),
-                new DataPoint(1, 9),
-                new DataPoint(2, 10),
-                new DataPoint(3, 15),
-                new DataPoint(4, 12),
-                new DataPoint(5, 9),
-                new DataPoint(6, 12),
-                new DataPoint(7, 7),
-                new DataPoint(8, 8)
-        });
-        //// graphView.setTitleTextSize(9);
-
-
-        graphView1.addSeries(series3);
-
-        series3.setColor(Color.YELLOW);
-
-        series3.setDrawBackground(false);
-
-////////////////////////////////////////////////////////////////////////////////////////
-
-        LineGraphSeries<DataPoint> series4 = new LineGraphSeries<DataPoint>(new DataPoint[]{
-
-                new DataPoint(0, 9),
-                new DataPoint(1, 11),
-                new DataPoint(2, 12),
-                new DataPoint(3, 17),
-                new DataPoint(4, 14),
-                new DataPoint(5, 11),
-                new DataPoint(6, 14),
-                new DataPoint(7, 9),
-                new DataPoint(8, 10)
-        });
-        //// graphView.setTitleTextSize(9);
-
-        graphView1.addSeries(series4);
-
-        series4.setColor(Color.BLUE);
-
-        series4.setDrawBackground(false);
-
-////////////////////////////////////////////////////////////////////////////////////////
-
-
-        LineGraphSeries<DataPoint> series5 = new LineGraphSeries<DataPoint>(new DataPoint[]{
-
-                new DataPoint(0, 13),
-                new DataPoint(1, 15),
-                new DataPoint(2, 16),
-                new DataPoint(3, 21),
-                new DataPoint(4, 18),
-                new DataPoint(5, 15),
-                new DataPoint(6, 18),
-                new DataPoint(7, 13),
-                new DataPoint(8, 14)
-        });
-        //// graphView.setTitleTextSize(9);
-
-
-
-        graphView1.addSeries(series5);
-        series5.setColor(Color.MAGENTA);
-
-        series5.setDrawBackground(false);
-
-////////////////////////////////////////////////////////////////////////////////////////
-
-        LineGraphSeries<DataPoint> series6 = new LineGraphSeries<DataPoint>(new DataPoint[]{
-
-                new DataPoint(0, 16),
-                new DataPoint(1, 18),
-                new DataPoint(2, 19),
-                new DataPoint(3, 24),
-                new DataPoint(4, 21),
-                new DataPoint(5, 18),
-                new DataPoint(6, 21),
-                new DataPoint(7, 16),
-                new DataPoint(8, 17)
-        });
-        //// graphView.setTitleTextSize(9);
-
-
-        graphView1.addSeries(series6);
-
-        series6.setColor(Color.GREEN);
-        series6.setDrawBackground(false);
-
-////////////////////////////////////////////////////////////////////////////////////////
-
-        LineGraphSeries<DataPoint> series7 = new LineGraphSeries<DataPoint>(new DataPoint[]{
-
-                new DataPoint(0, 21),
-                new DataPoint(1, 23),
-                new DataPoint(2, 24),
-                new DataPoint(3, 29),
-                new DataPoint(4, 26),
-                new DataPoint(5, 23),
-                new DataPoint(6, 26),
-                new DataPoint(7, 21),
-                new DataPoint(8, 22)
-        });
-        //// graphView.setTitleTextSize(9);
-
-
-        graphView1.addSeries(series7);
-        series7.setColor(Color.YELLOW);
-        series7.setDrawBackground(false);
-
-////////////////////////////////////////////////////////////////////////////////////////
-
-        LineGraphSeries<DataPoint> series8 = new LineGraphSeries<DataPoint>(new DataPoint[]{
-
-                new DataPoint(0, 26),
-                new DataPoint(1, 28),
-                new DataPoint(2, 29),
-                new DataPoint(3, 34),
-                new DataPoint(4, 31),
-                new DataPoint(5, 28),
-                new DataPoint(6, 31),
-                new DataPoint(7, 26),
-                new DataPoint(8, 27)
-        });
-
-
-
-        graphView1.addSeries(series8);
-        series8.setColor(Color.BLUE);
-        series8.setDrawBackground(false);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 /*
@@ -440,10 +204,36 @@ public class EightRootActivity extends AppCompatActivity {
 
  */
 ////////////////////////////////////////////////////////////////////////////////////////
+        Bundle extras = getIntent().getExtras();
+        if (extras == null) {
 
-        graphView1.removeAllSeries();
-        ConnectGraphview drawGraphview=new ConnectGraphview(graphView1,counter);
+            FileReader fileReader = new FileReader(string1, counter, namePivote, pivotValue);
+            fileReader.read();
+
+        }
+        if (extras != null) {
+
+            FileReader fileReader = new FileReader((String1) getIntent().getSerializableExtra("h"), counter, namePivote, pivotValue);
+            fileReader.read();
+
+        }
+
+
+        ConnectGraphview drawGraphview=new ConnectGraphview(graphView1,counter,string1);
         drawGraphview.draw();
+
+
+
+
+
+        lineplay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+            }
+        });
+
     }
 
 
@@ -456,7 +246,17 @@ public class EightRootActivity extends AppCompatActivity {
         btn=findViewById(R.id.note_eightroot);
         notch=findViewById(R.id.notch_eightroot);
         montage=findViewById(R.id.montage_eightroot);
-        bluetooth=findViewById(R.id.bluetoooth_eightroot);
         listView=dialog.findViewById(R.id.list);
+        lineplay=findViewById(R.id.playline);
+        graphView1=findViewById(R.id.eightgraphview1);
+    }
+    private void Setlinebtnanim(){
+
+                Animation animation = AnimationUtils.loadAnimation(getApplicationContext(),
+                        R.anim.anim);
+
+
+                    lineplay.startAnimation(animation);
+
     }
 }

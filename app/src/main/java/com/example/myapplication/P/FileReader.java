@@ -20,6 +20,7 @@ public class FileReader {
     Counter counter;
     SetPivotName namePivote;
     SetPivotValue pivotValue;
+    String patch;
 
     public FileReader(String1 string1, Counter counter, SetPivotName namePivote, SetPivotValue pivotValue) {
         this.string1 = string1;
@@ -29,15 +30,11 @@ public class FileReader {
     }
 
     public void read(){
-        final String fileName = "g8.txt";
-        File extStore = Environment.getExternalStorageDirectory();
-        String path = extStore.getAbsolutePath().toString() + "/Download/" + fileName;
-        Log.e("ExternalStorageDemo", "Read file: " + path);
 
         String s = "";
         String fileContent = "";
         try {
-            File myFile = new File(path);
+            File myFile = new File(string1.getFilepatch());
             FileInputStream fIn = new FileInputStream(myFile);
             myReader = new BufferedReader(
                     new InputStreamReader(fIn));
@@ -57,6 +54,7 @@ public class FileReader {
 
             while ((s = myReader.readLine()) != null) {
                 fileContent = s ;
+                string1.setLine_count(string1.getLine_count()+1);
                 pivotValue=new SetPivotValue(fileContent,string1,counter);
                 pivotValue.set();
             }
@@ -77,6 +75,8 @@ public class FileReader {
 
         pivotValue.setvalueofeachchannel();
         pivotValue.y();
+
+        Log.e("{{{{{{{{{{{",""+counter.getAll(5));
 
     }
 }
